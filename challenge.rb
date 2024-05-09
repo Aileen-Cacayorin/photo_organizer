@@ -1,3 +1,5 @@
+require 'irb'
+require 'date'
 # Write a function that, given a string representing the list of `M` photos,
 #returns the string representing the list of the new names of all photos
 #(the order of photos should stay the same).
@@ -56,7 +58,38 @@ Krakow05.png
 Krakow10.jpg"
 
 #TO DO:
-#split string into a hash with keys: name, ext?, city, datetime, index?
-#group hash by city, then sort by datetime
+#split string into a hash with keys: name, ext?, city, datetime, index? --> DONE
+#group hash by city, then sort by datetime --> DONE
 #assign number determine new photo name
 # return new string
+
+def parse_photos_from_string(string)
+  arr = string.split("\n")
+  new_arr = arr.map.with_index {|photo, index| parse_photo_details(photo, index) }
+end
+
+def parse_photo_details(photo, index)
+  arr = photo.split(',')
+  photo_name, photo_ext = arr[0].split('.')
+  city = arr[1].strip
+  date_str = arr[2].strip
+  datetime = DateTime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
+  index = index
+
+  { name: photo_name, ext: photo_ext, city: city, datetime: datetime, index: index}
+end
+
+def group_and_sort(photo_arr)
+  grouped_photos = photo_arr.group_by { |photo| photo[:city] }
+
+  sorted_photos = {}
+  grouped_photos.each do |city, photos|
+    sorted_photos[city] = photos.sort_by { |photo| photo[:datetime] }
+  end
+  sorted_photos
+end
+
+photo_arr = parse_photos_from_string(test_str)
+sorted_photos = group_and_sort(photo_arr)
+
+pp sorted_photos
