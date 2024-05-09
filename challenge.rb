@@ -60,8 +60,8 @@ Krakow10.jpg"
 #TO DO:
 #split string into a hash with keys: name, ext?, city, datetime, index? --> DONE
 #group hash by city, then sort by datetime --> DONE
-#assign number determine new photo name
-# return new string
+#assign number determine new photo name --> DONE
+# return new string --> DONE
 
 def parse_photos_from_string(string)
   arr = string.split("\n")
@@ -89,7 +89,22 @@ def group_and_sort(photo_arr)
   sorted_photos
 end
 
+def determine_new_photo_names(photo_hash)
+  photo_hash.each do |city, photos|
+    count = photos.length
+    len = count/10 + 1
+    photos.each_with_index do |photo, i|
+      num = (i + 1).to_s
+      photo[:new_name] = "#{city}#{num.rjust(len, '0')}"
+    end
+  end
+end
+
+def print_new_photo_str(photo_hash)
+  photo_hash.flat_map {|city, photos| photos }.sort_by { |photo| photo[:index] }.map { |photo| puts "#{[photo[:new_name], photo[:ext]].join('.')}" }
+end
+
 photo_arr = parse_photos_from_string(test_str)
 sorted_photos = group_and_sort(photo_arr)
-
-pp sorted_photos
+new_name_photos = determine_new_photo_names(sorted_photos)
+print_new_photo_str(new_name_photos)
