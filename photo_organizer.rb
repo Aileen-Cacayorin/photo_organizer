@@ -29,7 +29,7 @@ end
 def determine_new_photo_names(photo_hash)
   photo_hash.each do |city, photos|
     photos.map.with_index(1) do |photo, i|
-      photo[:new_name] = "#{city}#{i.to_s.rjust(photos.length/10 + 1, '0')}"
+      photo[:new_name] = "#{city}#{i.to_s.rjust(photos.length.digits.count, '0')}"
     end
   end
 end
