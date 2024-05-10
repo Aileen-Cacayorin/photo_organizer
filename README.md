@@ -13,7 +13,7 @@ returns the string representing the list of the new names of all photos
 
 * Clone this repository.
 * `cd` into the photo_organizer directory.
-* In the command line, run `ruby game.rb`
+* In the command line, run `ruby photo_organizer.rb`
 
 ### or call the ```solution``` function
 * ```cd``` into the photo_organizer directory
